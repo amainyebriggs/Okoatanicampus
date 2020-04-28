@@ -24,32 +24,12 @@ Detailed report with score obtained, percentage, percentile, categorywise report
 <br>
 <br><br>
 <strong>Useful links</strong><br> 
-Online Demo: <a href="https://savsoftquiz.com/web/demo.php" target="onlindedemo">https://savsoftquiz.com/web/demo.php</a> <br> 
-Installation Instructions: <a href="https://savsoftquiz.com/docs/installation.php" target="sqins">https://savsoftquiz.com/docs/installation.php</a> <br><br>
- 
-
-<strong>Enterprise version</strong><br> 
-Website: <a href="https://savsoftquiz.com">https://savsoftquiz.com</a> <br> 
-Power up with premium features like:<br> 
-1) Payment gateways<br> 
-2) Monetize methods<br> 
-3) Account types<br> 
-4) Landing page & CMS (Pages, posts, slider etc..)<br> 
-5) Multiple Group Subscription<br> 
-6) Support service & <a href="https://savsoftquiz.com">more</a><br> <br> 
-
-<br><br>
-
-
-Required any customisation or support service?<br><br>
-
-<strong>Contact us:</strong><br>
-Contact form: <a href="https://savsoftquiz.com/web/contact.php">https://savsoftquiz.com/web/contact.php</a><br>
+<br>
  
 
 <strong>The MIT License</strong><br> 
 
-Copyright 2019 TechKshetra Info Solutions Pvt. Ltd<br> 
+Copyright 2020. Ama-infosec Ltd<br> 
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 <br>
