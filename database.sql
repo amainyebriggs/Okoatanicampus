@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.1
+-- version 4.9.2deb1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: May 17, 2019 at 10:51 AM
--- Server version: 10.1.33-MariaDB
--- PHP Version: 7.2.6
+-- Host: localhost:3306
+-- Generation Time: Apr 28, 2020 at 07:58 PM
+-- Server version: 10.3.22-MariaDB-1
+-- PHP Version: 7.3.15-3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `savsoftquiz_v5.0`
+-- Database: `okoschool`
 --
 
 -- --------------------------------------------------------
@@ -46,7 +46,8 @@ CREATE TABLE `account_type` (
 
 INSERT INTO `account_type` (`account_id`, `users`, `quiz`, `results`, `questions`, `account_name`, `setting`, `study_material`, `appointment`) VALUES
 (1, 'Add,Edit,View,List,List_all,Myaccount,Remove', 'Attempt,Add,Edit,View,List,List_all,Remove', 'View,List,List_all,Remove', 'Add,Edit,View,list,List_all,Remove', 'Administrator', 'All', 'Add,Edit,View,List,List_all,Remove', 'List,List_all'),
-(2, 'Myaccount', 'Attempt,View,List', 'View,List,Remove', '', 'User', NULL, 'View,List', 'List');
+(2, 'Myaccount', 'Attempt,View,List', 'View,List,Remove', '', 'Student', NULL, 'View,List', 'List'),
+(3, 'Add,Edit,View,List,Myaccount,Remove', 'Attempt,Add,Edit,View,List,List_all,Remove', 'View,List,List_all,Remove', 'Add,Edit,View,list,List_all,Remove', 'Lecturer', NULL, 'Add,Edit,View,List,List_all,Remove', '');
 
 -- --------------------------------------------------------
 
@@ -58,7 +59,7 @@ CREATE TABLE `appointment_request` (
   `appointment_id` int(11) NOT NULL,
   `request_by` int(11) NOT NULL,
   `to_id` int(11) NOT NULL,
-  `appointment_timing` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `appointment_timing` timestamp NOT NULL DEFAULT current_timestamp(),
   `appointment_time_zone` varchar(100) NOT NULL DEFAULT 'Asia/Kolkata',
   `appointment_status` varchar(100) NOT NULL DEFAULT 'Pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -83,7 +84,7 @@ CREATE TABLE `ci_sessions` (
   `id` varchar(40) NOT NULL DEFAULT '0',
   `ip_address` varchar(45) NOT NULL DEFAULT '0',
   `data` text NOT NULL,
-  `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -223,7 +224,7 @@ CREATE TABLE `savsoft_answers` (
   `qid` int(11) NOT NULL,
   `q_option` text NOT NULL,
   `uid` int(11) NOT NULL,
-  `score_u` float NOT NULL DEFAULT '0',
+  `score_u` float NOT NULL DEFAULT 0,
   `rid` int(11) NOT NULL,
   `qn` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -290,8 +291,8 @@ CREATE TABLE `savsoft_category` (
 --
 
 INSERT INTO `savsoft_category` (`cid`, `category_name`) VALUES
-(1, 'General knowledge'),
-(2, 'Math');
+(1, 'Multimedia'),
+(2, 'Data Communication');
 
 -- --------------------------------------------------------
 
@@ -303,7 +304,7 @@ CREATE TABLE `savsoft_group` (
   `gid` int(11) NOT NULL,
   `group_name` varchar(1000) NOT NULL,
   `price` float NOT NULL,
-  `valid_for_days` int(11) NOT NULL DEFAULT '0',
+  `valid_for_days` int(11) NOT NULL DEFAULT 0,
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -312,9 +313,7 @@ CREATE TABLE `savsoft_group` (
 --
 
 INSERT INTO `savsoft_group` (`gid`, `group_name`, `price`, `valid_for_days`, `description`) VALUES
-(1, 'Free', 0, 0, '10 Free quiz'),
-(3, 'Premium-1', 100, 90, '100 Quizzes'),
-(4, 'Group 3', 2500, 90, '<p>Unlimites quizzes.</p>\r\n<p>Phone support</p>');
+(5, 'Hnd2 Computer Science', 0, 0, '');
 
 -- --------------------------------------------------------
 
@@ -332,8 +331,8 @@ CREATE TABLE `savsoft_level` (
 --
 
 INSERT INTO `savsoft_level` (`lid`, `level_name`) VALUES
-(1, 'Easy'),
-(2, 'Difficult');
+(1, 'First Semester'),
+(2, 'Second Semester');
 
 -- --------------------------------------------------------
 
@@ -343,12 +342,12 @@ INSERT INTO `savsoft_level` (`lid`, `level_name`) VALUES
 
 CREATE TABLE `savsoft_notification` (
   `nid` int(11) NOT NULL,
-  `notification_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `notification_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `title` varchar(100) DEFAULT NULL,
   `message` varchar(1000) DEFAULT NULL,
   `click_action` varchar(100) DEFAULT NULL,
   `notification_to` varchar(1000) DEFAULT NULL,
-  `response` text,
+  `response` text DEFAULT NULL,
   `uid` int(11) NOT NULL,
   `viewed` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -373,7 +372,7 @@ CREATE TABLE `savsoft_options` (
   `q_option` text NOT NULL,
   `q_option_match` varchar(1000) DEFAULT NULL,
   `q_option1` text NOT NULL,
-  `score` float NOT NULL DEFAULT '0',
+  `score` float NOT NULL DEFAULT 0,
   `q_option_match1` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -617,7 +616,33 @@ INSERT INTO `savsoft_options` (`oid`, `qid`, `q_option`, `q_option_match`, `q_op
 (480, 118, '<p>Osama</p>', NULL, '', 0, ''),
 (481, 118, '<p>Obama</p>', NULL, '', 1, ''),
 (482, 118, '<p>Arvind K</p>', NULL, '', 0, ''),
-(483, 118, '<p>Anil</p>', NULL, '', 0, '');
+(483, 118, '<p>Anil</p>', NULL, '', 0, ''),
+(484, 120, 'five', NULL, 'five', 0, ''),
+(485, 120, 'four', NULL, 'four', 1, ''),
+(486, 120, 'three', NULL, 'three', 0, ''),
+(487, 120, 'six', NULL, 'six', 0, ''),
+(488, 121, 'five', NULL, '', 0, ''),
+(489, 121, 'four', NULL, '', 0.5, ''),
+(490, 121, 'four', NULL, '', 0.5, ''),
+(491, 121, 'six', NULL, '', 0, ''),
+(492, 122, 'A', 'B', '', 0.25, ''),
+(493, 122, 'C', 'D', '', 0.25, ''),
+(494, 122, 'E', 'F', '', 0.25, ''),
+(495, 122, 'G', 'H', '', 0.25, ''),
+(496, 123, 'Blue, Sky blue', NULL, '', 0.25, ''),
+(497, 125, 'five', NULL, 'five', 0, ''),
+(498, 125, 'four', NULL, 'four', 1, ''),
+(499, 125, 'three', NULL, 'three', 0, ''),
+(500, 125, 'six', NULL, 'six', 0, ''),
+(501, 126, 'five', NULL, '', 0, ''),
+(502, 126, 'four', NULL, '', 0.5, ''),
+(503, 126, 'four', NULL, '', 0.5, ''),
+(504, 126, 'six', NULL, '', 0, ''),
+(505, 127, 'A', 'B', '', 0.25, ''),
+(506, 127, 'C', 'D', '', 0.25, ''),
+(507, 127, 'E', 'F', '', 0.25, ''),
+(508, 127, 'G', 'H', '', 0.25, ''),
+(509, 128, 'Blue, Sky blue', NULL, '', 0.25, '');
 
 -- --------------------------------------------------------
 
@@ -629,13 +654,13 @@ CREATE TABLE `savsoft_payment` (
   `pid` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
   `gid` int(11) NOT NULL,
-  `quid` int(11) NOT NULL DEFAULT '0',
+  `quid` int(11) NOT NULL DEFAULT 0,
   `amount` float NOT NULL,
   `paid_date` int(11) NOT NULL,
   `payment_gateway` varchar(100) NOT NULL DEFAULT 'Paypal',
   `payment_status` varchar(100) NOT NULL DEFAULT 'Pending',
   `transaction_id` varchar(1000) NOT NULL,
-  `other_data` text
+  `other_data` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -656,18 +681,18 @@ CREATE TABLE `savsoft_qbank` (
   `question_type` varchar(100) NOT NULL DEFAULT 'Multiple Choice Single Answer',
   `question` text NOT NULL,
   `description` text NOT NULL,
-  `question1` text,
-  `description1` text,
+  `question1` text DEFAULT NULL,
+  `description1` text DEFAULT NULL,
   `cid` int(11) NOT NULL,
   `lid` int(11) NOT NULL,
-  `no_time_served` int(11) NOT NULL DEFAULT '0',
-  `no_time_corrected` int(11) NOT NULL DEFAULT '0',
-  `no_time_incorrected` int(11) NOT NULL DEFAULT '0',
-  `no_time_unattempted` int(11) NOT NULL DEFAULT '0',
+  `no_time_served` int(11) NOT NULL DEFAULT 0,
+  `no_time_corrected` int(11) NOT NULL DEFAULT 0,
+  `no_time_incorrected` int(11) NOT NULL DEFAULT 0,
+  `no_time_unattempted` int(11) NOT NULL DEFAULT 0,
   `inserted_by` int(11) NOT NULL,
   `inserted_by_name` varchar(100) DEFAULT NULL,
-  `paragraph` text,
-  `paragraph1` text,
+  `paragraph` text DEFAULT NULL,
+  `paragraph1` text DEFAULT NULL,
   `parent_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -687,7 +712,18 @@ INSERT INTO `savsoft_qbank` (`qid`, `question_type`, `question`, `description`, 
 (115, 'Multiple Choice Single Answer', ' what is 2+2 =?', '  description here', ' what is 2+2 =? &ndash; This is second language question Note &ndash; keep question number same as its primary language question', '  description here', 2, 1, 2, 0, 1, 1, 0, NULL, ' Paragraph here', ' Paragraph here', 0),
 (116, 'Multiple Choice Single Answer', ' what is 2+2 =? &ndash; This is second language question Note &ndash; keep question number same as its primary language question', '  description here', NULL, NULL, 2, 1, 0, 0, 0, 0, 0, NULL, ' Paragraph here', NULL, 0),
 (117, 'Multiple Choice Multiple Answer', ' what is 2+6 =?', '  ', NULL, NULL, 2, 1, 2, 0, 0, 2, 0, NULL, '', NULL, 0),
-(118, 'Multiple Choice Single Answer', '<p>Who is in the picture?<img src=\"../../../../savsoftquiz_v4.0_enterprise/upload/word_images/15091002001.jpeg\" /></p>', '', NULL, NULL, 2, 1, 2, 0, 0, 2, 0, NULL, NULL, NULL, 0);
+(118, 'Multiple Choice Single Answer', '<p>Who is in the picture?<img src=\"../../../../savsoftquiz_v4.0_enterprise/upload/word_images/15091002001.jpeg\" /></p>', '', NULL, NULL, 2, 1, 2, 0, 0, 2, 0, NULL, NULL, NULL, 0),
+(119, 'Long Answer', '<p>what is ict</p>', '', NULL, NULL, 2, 1, 0, 0, 0, 0, 1, 'Admin Admin', NULL, NULL, 0),
+(120, 'Multiple Choice Single Answer', 'What is 2+2 = ?', 'Here is description or explanation', 'What is 2 +2 ?  second language Q. Note – Keep question type empty if it is second language question  of above question', 'Here is description or explanation', 2, 1, 0, 0, 0, 0, 1, NULL, NULL, NULL, 0),
+(121, 'Multiple Choice Multiple Answer', 'What is 2+2 = ?(multiple choice)', 'Here is description or explanation', NULL, NULL, 2, 1, 0, 0, 0, 0, 1, NULL, NULL, NULL, 0),
+(122, 'Match the Column', 'Match the column', 'Here is description or explanation', NULL, NULL, 2, 1, 0, 0, 0, 0, 1, NULL, NULL, NULL, 0),
+(123, 'Short Answer', 'What is the color of sky?', 'Here is description or explanation', NULL, NULL, 2, 1, 0, 0, 0, 0, 1, NULL, NULL, NULL, 0),
+(124, 'Long Answer', '<p>Write about Globalization in 250 words</p>', '<p>Here is description or explanation</p>', NULL, NULL, 2, 1, 0, 0, 0, 0, 1, NULL, NULL, NULL, 0),
+(125, 'Multiple Choice Single Answer', 'What is 2+2 = ?', 'Here is description or explanation', 'What is 2 +2 ?  second language Q. Note – Keep question type empty if it is second language question  of above question', 'Here is description or explanation', 1, 2, 0, 0, 0, 0, 1, 'Admin', NULL, NULL, 0),
+(126, 'Multiple Choice Multiple Answer', 'What is 2+2 = ?(multiple choice)', 'Here is description or explanation', NULL, NULL, 1, 2, 0, 0, 0, 0, 1, 'Admin', NULL, NULL, 0),
+(127, 'Match the Column', 'Match the column', 'Here is description or explanation', NULL, NULL, 1, 2, 0, 0, 0, 0, 1, 'Admin', NULL, NULL, 0),
+(128, 'Short Answer', 'What is the color of sky?', 'Here is description or explanation', NULL, NULL, 1, 2, 0, 0, 0, 0, 1, 'Admin', NULL, NULL, 0),
+(129, 'Long Answer', 'Write about Globalization in 250 words', 'Here is description or explanation', NULL, NULL, 1, 2, 0, 0, 0, 0, 1, 'Admin', NULL, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -732,21 +768,21 @@ CREATE TABLE `savsoft_quiz` (
   `correct_score` text NOT NULL,
   `incorrect_score` text NOT NULL,
   `ip_address` text NOT NULL,
-  `duration` int(11) NOT NULL DEFAULT '10',
-  `maximum_attempts` int(11) NOT NULL DEFAULT '1',
-  `pass_percentage` float NOT NULL DEFAULT '50',
-  `view_answer` int(11) NOT NULL DEFAULT '1',
-  `camera_req` int(11) NOT NULL DEFAULT '1',
-  `question_selection` int(11) NOT NULL DEFAULT '1',
-  `gen_certificate` int(11) NOT NULL DEFAULT '0',
-  `certificate_text` text,
-  `with_login` int(11) NOT NULL DEFAULT '1',
+  `duration` int(11) NOT NULL DEFAULT 10,
+  `maximum_attempts` int(11) NOT NULL DEFAULT 1,
+  `pass_percentage` float NOT NULL DEFAULT 50,
+  `view_answer` int(11) NOT NULL DEFAULT 1,
+  `camera_req` int(11) NOT NULL DEFAULT 1,
+  `question_selection` int(11) NOT NULL DEFAULT 1,
+  `gen_certificate` int(11) NOT NULL DEFAULT 0,
+  `certificate_text` text DEFAULT NULL,
+  `with_login` int(11) NOT NULL DEFAULT 1,
   `quiz_template` varchar(100) NOT NULL DEFAULT 'Default',
   `uids` varchar(1000) DEFAULT NULL,
-  `inserted_by` int(11) NOT NULL DEFAULT '1',
+  `inserted_by` int(11) NOT NULL DEFAULT 1,
   `inserted_by_name` varchar(100) DEFAULT 'Admin',
-  `show_chart_rank` int(11) NOT NULL DEFAULT '1',
-  `quiz_price` float NOT NULL DEFAULT '0'
+  `show_chart_rank` int(11) NOT NULL DEFAULT 1,
+  `quiz_price` float NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -776,13 +812,13 @@ CREATE TABLE `savsoft_result` (
   `category_range` text NOT NULL,
   `r_qids` text NOT NULL,
   `individual_time` text NOT NULL,
-  `total_time` int(11) NOT NULL DEFAULT '0',
-  `score_obtained` float NOT NULL DEFAULT '0',
-  `percentage_obtained` float NOT NULL DEFAULT '0',
+  `total_time` int(11) NOT NULL DEFAULT 0,
+  `score_obtained` float NOT NULL DEFAULT 0,
+  `percentage_obtained` float NOT NULL DEFAULT 0,
   `attempted_ip` varchar(100) NOT NULL,
   `score_individual` text NOT NULL,
   `photo` varchar(100) NOT NULL,
-  `manual_valuation` int(11) NOT NULL DEFAULT '0'
+  `manual_valuation` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -824,33 +860,31 @@ CREATE TABLE `savsoft_users` (
   `contact_no` varchar(1000) DEFAULT NULL,
   `connection_key` varchar(1000) DEFAULT NULL,
   `gid` varchar(100) NOT NULL DEFAULT '1',
-  `su` int(11) NOT NULL DEFAULT '0',
-  `inserted_by` int(11) NOT NULL DEFAULT '0',
-  `subscription_expired` int(11) NOT NULL DEFAULT '0',
-  `verify_code` int(11) NOT NULL DEFAULT '0',
+  `su` int(11) NOT NULL DEFAULT 0,
+  `inserted_by` int(11) NOT NULL DEFAULT 0,
+  `subscription_expired` int(11) NOT NULL DEFAULT 0,
+  `verify_code` int(11) NOT NULL DEFAULT 0,
   `wp_user` varchar(100) DEFAULT NULL,
-  `registered_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `registered_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `photo` varchar(1000) DEFAULT NULL,
   `user_status` varchar(100) NOT NULL DEFAULT 'Active',
   `web_token` varchar(1000) DEFAULT NULL,
   `android_token` varchar(1000) DEFAULT NULL,
   `skype_id` varchar(100) DEFAULT NULL,
-  `time_zone` varchar(100) DEFAULT 'Asia/Kolkata'
+  `time_zone` varchar(100) DEFAULT 'Asia/Kolkata',
+  `ADMISSION_NUMBER` varchar(240) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `savsoft_users`
 --
 
-INSERT INTO `savsoft_users` (`uid`, `password`, `email`, `first_name`, `last_name`, `contact_no`, `connection_key`, `gid`, `su`, `inserted_by`, `subscription_expired`, `verify_code`, `wp_user`, `registered_date`, `photo`, `user_status`, `web_token`, `android_token`, `skype_id`, `time_zone`) VALUES
-(1, '21232f297a57a5a743894a0e4a801fc3', 'admin@example.com', 'Admin', 'Admin', '1234567890', NULL, '1', 1, 0, 1776277800, 0, '', '2017-04-20 11:22:38', NULL, 'Active', 'dnwIpQWkxyA:APA91bFZLhdxZnPcNareTyHnJRikJGqaT7qh9DF4jSmyKSOq1rv6k7uwgmaQ4_K7jT3WNNUeKRdRQYsNf_OZaQZ7i5nKI_CjA6QGPwPsL5_D7ShPTtsuIwTkr0CuGx0RS7oAVNg_bImc', NULL, 'sandhu4222', 'Asia/Kolkata'),
-(5, 'e10adc3949ba59abbe56e057f20f883e', 'user@example.com', 'Userss', 'User', '1234567890', '123', '1', 2, 0, 2147483647, 0, '', '2017-04-20 11:22:38', NULL, 'Active', NULL, NULL, NULL, 'Asia/Kolkata'),
-(6, '21232f297a57a5a743894a0e4a801fc3', 'subadmin@example.com', 'Subadmin', 'Admin', '1234567890', NULL, '1', 1, 0, 1818873000, 0, NULL, '2017-08-24 05:50:57', NULL, 'Active', NULL, NULL, NULL, 'Asia/Kolkata'),
-(9, 'e10adc3949ba59abbe56e057f20f883e', 'user2@example.com', 'user2', 'user2', '1234567890', NULL, '1', 2, 0, 0, 0, NULL, '2017-08-25 10:20:10', NULL, 'Active', NULL, NULL, 'sandhu4222', 'Asia/Kolkata'),
-(10, '202cb962ac59075b964b07152d234b70', 'user23@gmail.com', 'user', 'user', '1234567890', NULL, '1,3', 2, 0, 0, 0, NULL, '2019-04-24 11:59:24', NULL, 'Active', NULL, NULL, NULL, 'Asia/Kolkata'),
-(11, 'e10adc3949ba59abbe56e057f20f883e', 'user@example222.com', 'sandhu', 'laddi', '1234569870', NULL, '1', 2, 0, 0, 9545, NULL, '2019-05-14 07:09:48', NULL, 'Active', NULL, NULL, NULL, 'Asia/Kolkata'),
-(12, 'e10adc3949ba59abbe56e057f20f883e', 'contact234@savsoft.info', 'sandhu', 'laddi', '1234567890', NULL, '1', 2, 0, 0, 6023, NULL, '2019-05-14 07:35:12', NULL, 'Active', NULL, NULL, NULL, 'Asia/Kolkata'),
-(13, '3d1dfde9304bff15332bf4b308a47b50', '1558001408', 'Guest User', '1558001408', '', NULL, '1', 0, 0, 0, 0, NULL, '2019-05-16 10:10:08', NULL, 'Active', NULL, NULL, NULL, 'Asia/Kolkata');
+INSERT INTO `savsoft_users` (`uid`, `password`, `email`, `first_name`, `last_name`, `contact_no`, `connection_key`, `gid`, `su`, `inserted_by`, `subscription_expired`, `verify_code`, `wp_user`, `registered_date`, `photo`, `user_status`, `web_token`, `android_token`, `skype_id`, `time_zone`, `ADMISSION_NUMBER`) VALUES
+(1, '21232f297a57a5a743894a0e4a801fc3', 'admin@example.com', 'Admin', 'Admin', '1234567890', NULL, '5', 1, 0, 1776277800, 0, '', '2017-04-20 11:22:38', NULL, 'Active', 'dnwIpQWkxyA:APA91bFZLhdxZnPcNareTyHnJRikJGqaT7qh9DF4jSmyKSOq1rv6k7uwgmaQ4_K7jT3WNNUeKRdRQYsNf_OZaQZ7i5nKI_CjA6QGPwPsL5_D7ShPTtsuIwTkr0CuGx0RS7oAVNg_bImc', NULL, 'sandhu4222', 'Asia/Kolkata', 'admin'),
+(10, '202cb962ac59075b964b07152d234b70', 'user23@gmail.com', 'user', 'user', '1234567890', NULL, '1,3', 2, 0, 0, 0, NULL, '2019-04-24 11:59:24', NULL, 'Active', NULL, NULL, NULL, 'Asia/Kolkata', NULL),
+(13, '3d1dfde9304bff15332bf4b308a47b50', '1558001408', 'Guest User', '1558001408', '', NULL, '5', 0, 0, 0, 0, NULL, '2019-05-16 10:10:08', NULL, 'Active', NULL, NULL, NULL, 'Asia/Kolkata', NULL),
+(14, '7516c3b35580b3490248629cff5e498c', 'mintel@yahoo.com', 'mintel', 'isor', '07069670641', NULL, '5', 2, 0, 1903372200, 0, NULL, '2020-04-28 15:03:18', NULL, 'Active', NULL, NULL, NULL, 'Asia/Kolkata', 'fpocsha18169'),
+(15, '7516c3b35580b3490248629cff5e498c', 'ibezim@yahoo.com', 'baldwin ', 'ibezim', '0999999999999', NULL, '5', 3, 0, 1903372200, 0, NULL, '2020-04-28 15:37:22', NULL, 'Active', NULL, NULL, NULL, 'Asia/Kolkata', 'ibezim');
 
 -- --------------------------------------------------------
 
@@ -887,8 +921,8 @@ CREATE TABLE `social_group` (
   `about` varchar(1000) NOT NULL,
   `sg_status` varchar(100) NOT NULL DEFAULT 'Public',
   `no_member` int(11) NOT NULL,
-  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `created_by` int(11) NOT NULL DEFAULT '1'
+  `created_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `created_by` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -909,7 +943,7 @@ CREATE TABLE `social_group_joined` (
   `join_id` int(11) NOT NULL,
   `sg_id` int(11) NOT NULL,
   `uid` int(11) NOT NULL,
-  `joined_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+  `joined_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
@@ -936,7 +970,7 @@ CREATE TABLE `study_material` (
   `study_description` text NOT NULL,
   `gids` varchar(100) NOT NULL,
   `cid` int(11) NOT NULL,
-  `created_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_date` timestamp NOT NULL DEFAULT current_timestamp(),
   `created_by` int(11) NOT NULL,
   `attachment` varchar(1000) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -946,7 +980,7 @@ CREATE TABLE `study_material` (
 --
 
 INSERT INTO `study_material` (`stid`, `title`, `study_description`, `gids`, `cid`, `created_date`, `created_by`, `attachment`) VALUES
-(8, 'GitHub', '<p><strong>GitHub</strong> is a web-based <a title=\"Git\" href=\"https://en.wikipedia.org/wiki/Git\">Git</a> or <a title=\"Repository (version control)\" href=\"https://en.wikipedia.org/wiki/Repository_(version_control)\">version control repository</a> and <a title=\"Internet hosting service\" href=\"https://en.wikipedia.org/wiki/Internet_hosting_service\">Internet hosting service</a>. It is mostly used for code. It offers all of the <a title=\"Distributed version control\" href=\"https://en.wikipedia.org/wiki/Distributed_version_control\">distributed version control</a> and <a class=\"mw-redirect\" title=\"Source code management\" href=\"https://en.wikipedia.org/wiki/Source_code_management\">source code management</a> (SCM) functionality of Git as well as adding its own features. It provides <a title=\"Access control\" href=\"https://en.wikipedia.org/wiki/Access_control\">access control</a> and several collaboration features such as <a title=\"Bug tracking system\" href=\"https://en.wikipedia.org/wiki/Bug_tracking_system\">bug tracking</a>, <a title=\"Software feature\" href=\"https://en.wikipedia.org/wiki/Software_feature\">feature requests</a>, <a title=\"Task management\" href=\"https://en.wikipedia.org/wiki/Task_management\">task management</a>, and<a title=\"Wiki\" href=\"https://en.wikipedia.org/wiki/Wiki\">wikis</a> for every project.<sup id=\"cite_ref-hugeinvestment_3-0\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-hugeinvestment-3\">[3]</a></sup></p>\r\n<p>GitHub offers both plans for private and free <a title=\"Repository (version control)\" href=\"https://en.wikipedia.org/wiki/Repository_(version_control)\">repositories</a> on the same account<sup id=\"cite_ref-4\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-4\">[4]</a></sup> which are commonly used to host <a class=\"mw-redirect\" title=\"Open-source\" href=\"https://en.wikipedia.org/wiki/Open-source\">open-source</a> software projects.<sup id=\"cite_ref-5\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-5\">[5]</a></sup> As of April 2017, GitHub reports having almost 20 million users and 57 million repositories,<sup id=\"cite_ref-6\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-6\">[6]</a></sup>making it the largest host of <a title=\"Source code\" href=\"https://en.wikipedia.org/wiki/Source_code\">source code</a> in the world.<sup id=\"cite_ref-7\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-7\">[7]</a></sup></p>\r\n<p>GitHub has a <a title=\"Mascot\" href=\"https://en.wikipedia.org/wiki/Mascot\">mascot</a> called Octocat, a cat with five tentacles and a human-like face.<sup id=\"cite_ref-Octodex_FAQ_8-0\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-Octodex_FAQ-8\">[8]</a></sup><sup id=\"cite_ref-Jaramillo_9-0\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-Jaramillo-9\">[9]</a></sup></p>', '1,3,4', 1, '2017-08-28 19:49:57', 1, '1503949797.pdf');
+(8, 'GitHub', '<p><strong>GitHub</strong> is a web-based <a title=\"Git\" href=\"https://en.wikipedia.org/wiki/Git\">Git</a> or <a title=\"Repository (version control)\" href=\"https://en.wikipedia.org/wiki/Repository_(version_control)\">version control repository</a> and <a title=\"Internet hosting service\" href=\"https://en.wikipedia.org/wiki/Internet_hosting_service\">Internet hosting service</a>. It is mostly used for code. It offers all of the <a title=\"Distributed version control\" href=\"https://en.wikipedia.org/wiki/Distributed_version_control\">distributed version control</a> and <a class=\"mw-redirect\" title=\"Source code management\" href=\"https://en.wikipedia.org/wiki/Source_code_management\">source code management</a> (SCM) functionality of Git as well as adding its own features. It provides <a title=\"Access control\" href=\"https://en.wikipedia.org/wiki/Access_control\">access control</a> and several collaboration features such as <a title=\"Bug tracking system\" href=\"https://en.wikipedia.org/wiki/Bug_tracking_system\">bug tracking</a>, <a title=\"Software feature\" href=\"https://en.wikipedia.org/wiki/Software_feature\">feature requests</a>, <a title=\"Task management\" href=\"https://en.wikipedia.org/wiki/Task_management\">task management</a>, and<a title=\"Wiki\" href=\"https://en.wikipedia.org/wiki/Wiki\">wikis</a> for every project.<sup id=\"cite_ref-hugeinvestment_3-0\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-hugeinvestment-3\">[3]</a></sup></p>\r\n<p>GitHub offers both plans for private and free <a title=\"Repository (version control)\" href=\"https://en.wikipedia.org/wiki/Repository_(version_control)\">repositories</a> on the same account<sup id=\"cite_ref-4\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-4\">[4]</a></sup> which are commonly used to host <a class=\"mw-redirect\" title=\"Open-source\" href=\"https://en.wikipedia.org/wiki/Open-source\">open-source</a> software projects.<sup id=\"cite_ref-5\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-5\">[5]</a></sup> As of April 2017, GitHub reports having almost 20 million users and 57 million repositories,<sup id=\"cite_ref-6\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-6\">[6]</a></sup>making it the largest host of <a title=\"Source code\" href=\"https://en.wikipedia.org/wiki/Source_code\">source code</a> in the world.<sup id=\"cite_ref-7\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-7\">[7]</a></sup></p>\r\n<p>GitHub has a <a title=\"Mascot\" href=\"https://en.wikipedia.org/wiki/Mascot\">mascot</a> called Octocat, a cat with five tentacles and a human-like face.<sup id=\"cite_ref-Octodex_FAQ_8-0\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-Octodex_FAQ-8\">[8]</a></sup><sup id=\"cite_ref-Jaramillo_9-0\" class=\"reference\"><a href=\"https://en.wikipedia.org/wiki/GitHub#cite_note-Jaramillo-9\">[9]</a></sup></p>', '1,3,4', 1, '2017-08-28 19:49:57', 2, '1503949797.pdf');
 
 -- --------------------------------------------------------
 
@@ -1433,7 +1467,7 @@ ALTER TABLE `warning_message`
 -- AUTO_INCREMENT for table `account_type`
 --
 ALTER TABLE `account_type`
-  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `account_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `appointment_request`
@@ -1475,7 +1509,7 @@ ALTER TABLE `savsoft_category`
 -- AUTO_INCREMENT for table `savsoft_group`
 --
 ALTER TABLE `savsoft_group`
-  MODIFY `gid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `gid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `savsoft_level`
@@ -1493,7 +1527,7 @@ ALTER TABLE `savsoft_notification`
 -- AUTO_INCREMENT for table `savsoft_options`
 --
 ALTER TABLE `savsoft_options`
-  MODIFY `oid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=484;
+  MODIFY `oid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=510;
 
 --
 -- AUTO_INCREMENT for table `savsoft_payment`
@@ -1505,7 +1539,7 @@ ALTER TABLE `savsoft_payment`
 -- AUTO_INCREMENT for table `savsoft_qbank`
 --
 ALTER TABLE `savsoft_qbank`
-  MODIFY `qid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+  MODIFY `qid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=130;
 
 --
 -- AUTO_INCREMENT for table `savsoft_qcl`
@@ -1529,7 +1563,7 @@ ALTER TABLE `savsoft_result`
 -- AUTO_INCREMENT for table `savsoft_users`
 --
 ALTER TABLE `savsoft_users`
-  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `uid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `savsoft_users_custom`
