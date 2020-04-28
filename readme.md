@@ -2,6 +2,24 @@
 Acet is an Opern Source and Free php based web application (script) to create and manage online quiz, test, exam on your website.<br>
 <br> 
 
+<h2>Setup</h2>
+
+goto application->config <br>
+edit sq_config.php
+
+<h2>Admin login</h2>
+username:admin
+password:admin
+<br>
+<h2>Student login</h2>
+username:fpocsha18169
+password:school
+<br>
+
+<h2>Lecturer login</h2>
+username:ibezim
+password:school
+
 <h2><a href="https://github.com/amainyebriggs/Okoatanicampus/archive/master.zip">Download</a></h2>
 
 <br><br>
