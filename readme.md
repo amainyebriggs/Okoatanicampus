@@ -8,17 +8,16 @@ goto application->config <br>
 edit sq_config.php
 
 <h2>Admin login</h2>
-username:admin
-<p></p>
+username:admin <br>
 password:admin
 <br>
 <h2>Student login</h2>
-username:fpocsha18169
+username:fpocsha18169 <br>
 password:school
 <br>
 
 <h2>Lecturer login</h2>
-username:ibezim
+username:ibezim <br>
 password:school
 
 <h2><a href="https://github.com/amainyebriggs/Okoatanicampus/archive/master.zip">Download</a></h2>
