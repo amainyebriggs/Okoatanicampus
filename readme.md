@@ -9,6 +9,7 @@ edit sq_config.php
 
 <h2>Admin login</h2>
 username:admin
+<p></p>
 password:admin
 <br>
 <h2>Student login</h2>
