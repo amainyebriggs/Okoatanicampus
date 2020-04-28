@@ -1,0 +1,13 @@
+"Question type
+0 = Single answer
+1 =Multiple answer
+2=Match the column 
+3=Short answer
+4=Long answer
+",Question,Description,correct option number,Option 1,Option 2,Option 3,Option 4
+0,What is 2+2 = ?,Here is description or explanation,2,five,four,three,six
+,What is 2 +2 ?  second language Q. Note – Keep question type empty if it is second language question  of above question,Here is description or explanation,2,five,four,three,six
+1,What is 2+2 = ?(multiple choice),Here is description or explanation,"2,3",five,four,four,six
+2,Match the column,Here is description or explanation,,A=B,C=D,E=F,G=H
+3,What is the color of sky?,Here is description or explanation,,"Blue, Sky blue",,,
+4,Write about Globalization in 250 words,Here is description or explanation,,,,,
